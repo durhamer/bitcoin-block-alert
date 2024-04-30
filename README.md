@@ -1,5 +1,3 @@
-Certainly! Below is a template for a `README.md` file for your "bitcoin_block_alert.py" script. This template includes sections that are typically found in software documentation, such as an introduction, requirements, installation instructions, usage guide, and a contact section. Feel free to modify the content to better fit the specifics of your project and personal style.
-
 ```markdown
 # Bitcoin Block Alert
 
