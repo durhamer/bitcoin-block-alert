@@ -1,6 +1,6 @@
+import configparser
 import requests
 import time
-import os
 
 
 def get_current_block_height():
@@ -8,13 +8,24 @@ def get_current_block_height():
     return response.json()
 
 
-def notify(title, message):
-    # Using terminal-notifier to send a sticky notification
-    os.system(
-        f'terminal-notifier -title "{title}" -message "{message}" -sound default -sticky')
+def send_telegram_message(bot_token, chat_id, message):
+    url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+    payload = {
+        'chat_id': chat_id,
+        'text': message
+    }
+    response = requests.post(url, data=payload)
+    return response.json()
 
 
 def main():
+    # Load configuration
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    bot_token = config['telegram']['bot_token']
+    chat_id = config['telegram']['chat_id']
+
+    # Display the current block height before asking for the target height
     current_height = get_current_block_height()
     print(f"Current Bitcoin Block Height: {current_height}")
 
@@ -24,8 +35,8 @@ def main():
         current_height = get_current_block_height()
         print(f"Current Bitcoin Block Height: {current_height}")
         if current_height >= target_height:
-            notify('Bitcoin Block Height Alert',
-                   f'The current block height {current_height} has reached or surpassed the target of {target_height}.')
+            message = f'The current block height {current_height} has reached or surpassed the target of {target_height}.'
+            send_telegram_message(bot_token, chat_id, message)
             break
         time.sleep(60)  # Check every minute
 
