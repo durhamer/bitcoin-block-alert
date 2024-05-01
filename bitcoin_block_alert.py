@@ -30,12 +30,15 @@ def main():
     print(f"Current Bitcoin Block Height: {current_height}")
 
     target_height = int(input("Enter the target block height: "))
+    # Prompt user to enter a note
+    note = input("Enter a note for this target block height: ")
 
     while True:
         current_height = get_current_block_height()
         print(f"Current Bitcoin Block Height: {current_height}")
         if current_height >= target_height:
-            message = f'The current block height {current_height} has reached or surpassed the target of {target_height}.'
+            # Include the user's note in the message
+            message = f'The current block height {current_height} has reached or surpassed the target of {target_height}. Note: {note}'
             send_telegram_message(bot_token, chat_id, message)
             break
         time.sleep(60)  # Check every minute
